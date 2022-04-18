@@ -1,5 +1,5 @@
 table {
-  margin: 20px;
+  margin: 20px 700px;
 }
 
 .light-cell {
@@ -13,6 +13,6 @@ table {
   width: 45px;
   height: 45px;
 }
-#selected{
+.selected{
 background-color: rgba(240, 240, 84, 0.541);
 }
