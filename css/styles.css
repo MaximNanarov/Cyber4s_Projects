@@ -16,3 +16,7 @@ table {
 .selected{
 background-color: rgba(240, 240, 84, 0.541);
 }
+
+.Movable{
+  background-color: rgba(192, 75, 75, 0.623);
+}

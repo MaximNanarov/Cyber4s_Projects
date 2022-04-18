@@ -66,19 +66,6 @@ function addImage(cell, player, name) {
   cell.appendChild(image);
 }
 
-function addImageByIndex(cell, player, index) {
-  if (index === 0 || index === 7) {
-    addImage(cell, player, 'rook');
-  } else if (index === 1 || index === 6) {
-    addImage(cell, player, 'knight');
-  } else if (index === 2 || index === 5) {
-    addImage(cell, player, 'bishop');
-  } else if (index === 3) {
-    addImage(cell, player, 'king');
-  } else if (index === 4) {
-    addImage(cell, player, 'queen');
-  }
-}
 //the click that chooses a cell
 function onCellClick(event) {
   if (selectedCell !== undefined) {
@@ -86,10 +73,44 @@ function onCellClick(event) {
   }
   selectedCell = event.currentTarget;
   selectedCell.classList.add('selected');
-  console.log(selectedCell);
-  
-  
+  let cI = selectedCell.cellIndex;
+  let rI = selectedCell.parentNode.rowIndex;
+  let pType = getThePieceByIndex(cI, rI );
+  pieceMove(table1,pType,cI, rI ); 
   }
+
+function getThePieceByIndex(cI, rI)//get's the index of the cell that's been clikced and getting the piece placed in it
+  {
+   let pLength = pieces.length; 
+   for(let i = 0; i < pLength; i++)
+   {
+     if(pieces[i].row === rI && pieces[i].col === cI)
+     {
+       return pieces[i].type; 
+     }
+   }
+  }
+
+function pieceMove(table,type, cI ,rI)
+{
+  let down =7;
+  let up =0;
+  let right =7; 
+  let left =0;
+  let cell; 
+  if(type === 'rook')
+  {
+    while(up + rI >= 0)
+    {
+      console.log(rI + ' ' + cI);
+      console.log(table.row[rI].rowIndex+' '+table.row[rI].cell[cI].cellIndex)
+      table.row[rI].cell[cI].classList.add('Movable');
+      rI--;
+    }
+  }
+}
+
+
 // creats the chess board
 function createChessBoard() {
   const table1 = document.createElement('table');
