@@ -9,6 +9,22 @@ let moveFlag = true;
 let selectedCell;
 let pieces = [];
 
+class boardData{
+  constructor(B){
+    this.table = B;
+  }
+
+
+  cleanBoardFromMoves() {
+   for(let i = 0; i < 8; i++){
+    for(let j = 0; j < 8; j++){
+     this.table.rows[i].cells[j].classList.remove('Movable');
+    } 
+   }
+  }
+  
+}
+
 class Piece {
   constructor(row, col, type, player) {
     this.row = row;
@@ -72,15 +88,19 @@ function onCellClick(event) {
   if (selectedCell !== undefined) {
     selectedCell.classList.remove('selected');
   }
+  // for(let i = 0; i < 8; i++){
+  //       for(let j = 0; j < 8; j++){
+  //        document.getElementById('table1').rows[i].cells[j].classList.remove('Movable');
+  //       } 
+  //      }
+  let BoardData = new boardData(document.getElementById('table1'));
+  BoardData.cleanBoardFromMoves();
   selectedCell = event.currentTarget;
   selectedCell.classList.add('selected');
   let cI = selectedCell.cellIndex;
   let rI = selectedCell.parentNode.rowIndex;
   let pType = getThePieceByIndex(cI, rI);
-  if(moveFlag)
-  {
-    moveFlag = pieceMoveRemove(pType,cI, rI);
-  }
+  
   
    moveFlag = pieceMove(pType,cI, rI); 
 }
@@ -123,7 +143,7 @@ function pieceMove(type, cI ,rI)
     }
     cI2 = cI;
     rI2= rI; 
-    while( down - rI2 > 0)
+    while(down - rI2 >= 0)
     {
       console.log(rI2 + ' ' + cI2);
       document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
@@ -131,7 +151,7 @@ function pieceMove(type, cI ,rI)
     }
      cI2 = cI;
      rI2= rI; 
-    while(right - cI2 > 0)
+    while(right - cI2 >= 0)
     {
       console.log(rI2 + ' ' + cI2);
       document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
@@ -142,50 +162,50 @@ function pieceMove(type, cI ,rI)
   }
   return false;
 }
-function pieceMoveRemove(type, cI ,rI)
-{
-  let down =7;
-  let up =0;
-  let right =7; 
-  let left =0;
-  let cI2 = cI;
-  let rI2= rI; 
-  if(type === 'rook') // the movement of rook
-  {
-    while(rI2 >= 0)
-    {
-      console.log(rI2 + ' ' + cI2);
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
-      rI2--;
-    }
-     cI2 = cI;
-     rI2= rI; 
-    while(cI2 >= 0)
-    {
-      console.log(rI2 + ' ' + cI2);
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
-      cI2--;
-    }
-    cI2 = cI;
-    rI2= rI; 
-    while( down - rI2 > 0)
-    {
-      console.log(rI2 + ' ' + cI2);
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
-      rI2++;
-    }
-     cI2 = cI;
-     rI2= rI; 
-    while(right - cI2 > 0)
-    {
-      console.log(rI2 + ' ' + cI2);
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
-      cI2++;
-    }
-    cI2 = cI;
-    rI2= rI; 
-  }
-}
+// function pieceMoveRemove(type, cI ,rI)
+// {
+//   let down =7;
+//   let up =0;
+//   let right =7; 
+//   let left =0;
+//   let cI2 = cI;
+//   let rI2= rI; 
+//   if(type === 'rook') // the movement of rook
+//   {
+//     while(rI2 >= 0)
+//     {
+//       console.log(rI2 + ' ' + cI2);
+//       document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
+//       rI2--;
+//     }
+//      cI2 = cI;
+//      rI2= rI; 
+//     while(cI2 >= 0)
+//     {
+//       console.log(rI2 + ' ' + cI2);
+//       document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
+//       cI2--;
+//     }
+//     cI2 = cI;
+//     rI2= rI; 
+//     while( down - rI2 > 0)
+//     {
+//       console.log(rI2 + ' ' + cI2);
+//       document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
+//       rI2++;
+//     }
+//      cI2 = cI;
+//      rI2= rI; 
+//     while(right - cI2 > 0)
+//     {
+//       console.log(rI2 + ' ' + cI2);
+//       document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
+//       cI2++;
+//     }
+//     cI2 = cI;
+//     rI2= rI; 
+//   }
+// }
 
 
 // creats the chess board
