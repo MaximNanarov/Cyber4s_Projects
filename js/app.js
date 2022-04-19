@@ -299,7 +299,7 @@ function pieceMove(type, cI ,rI)
   {
     let x; 
     let y; 
-    let surrondings = [[cI2 - 2 , rI2 + 1] ]; 
+    let surrondings = [[cI2 - 2 , rI2 - 1],[cI2 - 2 , rI2 + 1],[cI2 - 1 , rI2 - 2],[cI2 - 1 , rI2 + 2], [cI2 + 1 , rI2 - 2], [cI2 + 1 , rI2 + 2], [cI2 + 2 , rI2 - 1], [cI2 + 2 , rI2 + 1]]; 
     for(let i = 0; i < surrondings.length; i++)
     {
       x = surrondings[i][0]; 
