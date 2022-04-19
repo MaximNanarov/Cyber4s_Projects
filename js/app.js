@@ -5,6 +5,7 @@ const BOARD_SIZE = 8;
 const WHITE_PLAYER = 'white_rotated';
 const DARK_PLAYER = 'dark';
 
+let moveFlag = true;
 let selectedCell;
 let pieces = [];
 
@@ -75,9 +76,14 @@ function onCellClick(event) {
   selectedCell.classList.add('selected');
   let cI = selectedCell.cellIndex;
   let rI = selectedCell.parentNode.rowIndex;
-  let pType = getThePieceByIndex(cI, rI );
-  pieceMove(table1,pType,cI, rI ); 
+  let pType = getThePieceByIndex(cI, rI);
+  if(moveFlag)
+  {
+    moveFlag = pieceMoveRemove(pType,cI, rI);
   }
+  
+   moveFlag = pieceMove(pType,cI, rI); 
+}
 
 function getThePieceByIndex(cI, rI)//get's the index of the cell that's been clikced and getting the piece placed in it
   {
@@ -91,22 +97,93 @@ function getThePieceByIndex(cI, rI)//get's the index of the cell that's been cli
    }
   }
 
-function pieceMove(table,type, cI ,rI)
+function pieceMove(type, cI ,rI)
 {
   let down =7;
   let up =0;
   let right =7; 
   let left =0;
-  let cell; 
-  if(type === 'rook')
+  let cI2 = cI;
+  let rI2= rI; 
+  if(type === 'rook') // the movement of rook
   {
-    while(up + rI >= 0)
+    while(rI2 >= 0)
     {
-      console.log(rI + ' ' + cI);
-      console.log(table.row[rI].rowIndex+' '+table.row[rI].cell[cI].cellIndex)
-      table.row[rI].cell[cI].classList.add('Movable');
-      rI--;
+      console.log(rI2 + ' ' + cI2);
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      rI2--;
     }
+     cI2 = cI;
+     rI2= rI; 
+    while(cI2 >= 0)
+    {
+      console.log(rI2 + ' ' + cI2);
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      cI2--;
+    }
+    cI2 = cI;
+    rI2= rI; 
+    while( down - rI2 > 0)
+    {
+      console.log(rI2 + ' ' + cI2);
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      rI2++;
+    }
+     cI2 = cI;
+     rI2= rI; 
+    while(right - cI2 > 0)
+    {
+      console.log(rI2 + ' ' + cI2);
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      cI2++;
+    }
+    cI2 = cI;
+    rI2= rI; 
+  }
+  return false;
+}
+function pieceMoveRemove(type, cI ,rI)
+{
+  let down =7;
+  let up =0;
+  let right =7; 
+  let left =0;
+  let cI2 = cI;
+  let rI2= rI; 
+  if(type === 'rook') // the movement of rook
+  {
+    while(rI2 >= 0)
+    {
+      console.log(rI2 + ' ' + cI2);
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
+      rI2--;
+    }
+     cI2 = cI;
+     rI2= rI; 
+    while(cI2 >= 0)
+    {
+      console.log(rI2 + ' ' + cI2);
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
+      cI2--;
+    }
+    cI2 = cI;
+    rI2= rI; 
+    while( down - rI2 > 0)
+    {
+      console.log(rI2 + ' ' + cI2);
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
+      rI2++;
+    }
+     cI2 = cI;
+     rI2= rI; 
+    while(right - cI2 > 0)
+    {
+      console.log(rI2 + ' ' + cI2);
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
+      cI2++;
+    }
+    cI2 = cI;
+    rI2= rI; 
   }
 }
 
@@ -114,6 +191,7 @@ function pieceMove(table,type, cI ,rI)
 // creats the chess board
 function createChessBoard() {
   const table1 = document.createElement('table');
+  table1.setAttribute('id','table1'); 
   document.body.appendChild(table1);
   for (let i = 0; i < BOARD_SIZE; i++) {
     const row = table1.insertRow();
