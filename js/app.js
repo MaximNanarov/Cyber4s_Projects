@@ -10,19 +10,19 @@ let selectedCell;
 let pieces = [];
 
 class boardData{
+
   constructor(B){
     this.table = B;
   }
 
-
   cleanBoardFromMoves() {
-   for(let i = 0; i < 8; i++){
-    for(let j = 0; j < 8; j++){
-     this.table.rows[i].cells[j].classList.remove('Movable');
-    } 
-   }
-  }
-  
+    for(let i = 0; i < 8; i++){
+     for(let j = 0; j < 8; j++){
+      this.table.rows[i].cells[j].classList.remove('Movable');
+      } 
+     }
+
+  }  
 }
 
 class Piece {
@@ -88,11 +88,6 @@ function onCellClick(event) {
   if (selectedCell !== undefined) {
     selectedCell.classList.remove('selected');
   }
-  // for(let i = 0; i < 8; i++){
-  //       for(let j = 0; j < 8; j++){
-  //        document.getElementById('table1').rows[i].cells[j].classList.remove('Movable');
-  //       } 
-  //      }
   let BoardData = new boardData(document.getElementById('table1'));
   BoardData.cleanBoardFromMoves();
   selectedCell = event.currentTarget;
@@ -107,29 +102,38 @@ function onCellClick(event) {
 
 function getThePieceByIndex(cI, rI)//get's the index of the cell that's been clikced and getting the piece placed in it
   {
-   let pLength = pieces.length; 
+   let pLength = pieces.length;
+   let result = [,];  
    for(let i = 0; i < pLength; i++)
    {
      if(pieces[i].row === rI && pieces[i].col === cI)
      {
-       return pieces[i].type; 
+       return [pieces[i].type, pieces[i].player]; 
      }
    }
   }
 
 function pieceMove(type, cI ,rI)
 {
+  let bd = new boardData(document.getElementById('table1'));
+  let table = bd.table;
   let down =7;
   let up =0;
   let right =7; 
   let left =0;
   let cI2 = cI;
   let rI2= rI; 
-  if(type === 'rook') // the movement of rook
+  if(type[0] === 'rook') // the movement of rook
   {
+    while(cI2 >= 0)
+    {
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      cI2--;
+    }
+    cI2 = cI;
+    rI2= rI;
     while(rI2 >= 0)
     {
-      console.log(rI2 + ' ' + cI2);
       document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
       rI2--;
     }
@@ -137,7 +141,6 @@ function pieceMove(type, cI ,rI)
      rI2= rI; 
     while(cI2 >= 0)
     {
-      console.log(rI2 + ' ' + cI2);
       document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
       cI2--;
     }
@@ -145,7 +148,6 @@ function pieceMove(type, cI ,rI)
     rI2= rI; 
     while(down - rI2 >= 0)
     {
-      console.log(rI2 + ' ' + cI2);
       document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
       rI2++;
     }
@@ -153,14 +155,161 @@ function pieceMove(type, cI ,rI)
      rI2= rI; 
     while(right - cI2 >= 0)
     {
-      console.log(rI2 + ' ' + cI2);
       document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
       cI2++;
     }
     cI2 = cI;
     rI2= rI; 
   }
-  return false;
+  if(type[0] === 'pawn' && type[1] === 'dark')
+  {
+    table.rows[rI2 - 1].cells[cI2].classList.add('Movable');;
+  }
+  else if(type[0] === 'pawn' && type[1] === 'white_rotated')
+  {
+    table.table.rows[rI + 1].cells[cI].classList.add('Movable');
+  }
+  if(type[0] === 'bishop')
+  {//up & left
+    while(cI2 > 0 && rI2 > 0) 
+    {
+      cI2--; 
+      rI2--;
+      table.rows[rI2].cells[cI2].classList.add('Movable');
+    }
+    cI2 = cI;
+    rI2= rI; 
+    //up & right
+    while(cI2 < 7 && rI2 > 0) 
+    {
+      cI2++; 
+      rI2--;
+      table.rows[rI2].cells[cI2].classList.add('Movable');
+    }
+    cI2 = cI;
+    rI2= rI; 
+    //down & left
+    while(cI2 > 0 && rI2 < 7) 
+    {
+      cI2--; 
+      rI2++;
+      table.rows[rI2].cells[cI2].classList.add('Movable');
+    }
+    cI2 = cI;
+    rI2= rI; 
+    //down & right
+    while(cI2 < 7 && rI2 < 7) 
+    {
+      cI2++; 
+      rI2++;
+      table.rows[rI2].cells[cI2].classList.add('Movable');
+    }
+    cI2 = cI;
+    rI2= rI; 
+  }
+  if(type[0]=== 'king')
+  {
+    let x; 
+    let y; 
+    let surrondings = [[cI2 + 1 , rI2 + 1], [cI2 - 1 , rI2 - 1], [cI2 + 1 , rI2 - 1],[cI2 - 1 , rI2 + 1],[cI2  , rI2 + 1],[cI2 + 1 , rI2 ],[cI2 , rI2 - 1],[cI2 - 1 , rI2] ]; 
+    for(let i = 0; i < surrondings.length; i++)
+    {
+      x = surrondings[i][0]; 
+      y = surrondings[i][1]; 
+      if((x < 8 && x >= 0) && (y < 8 && y >= 0)){ 
+      console.log('x: ' + x +' y: ' + y);
+      table.rows[y].cells[x].classList.add('Movable');
+      }
+    }
+  }
+  if(type[0] === 'queen')
+  {
+    while(cI2 > 0 && rI2 > 0) 
+    {
+      cI2--; 
+      rI2--;
+      table.rows[rI2].cells[cI2].classList.add('Movable');
+    }
+    cI2 = cI;
+    rI2= rI; 
+    //up & right
+    while(cI2 < 7 && rI2 > 0) 
+    {
+      cI2++; 
+      rI2--;
+      table.rows[rI2].cells[cI2].classList.add('Movable');
+    }
+    cI2 = cI;
+    rI2= rI; 
+    //down & left
+    while(cI2 > 0 && rI2 < 7) 
+    {
+      cI2--; 
+      rI2++;
+      table.rows[rI2].cells[cI2].classList.add('Movable');
+    }
+    cI2 = cI;
+    rI2= rI; 
+    //down & right
+    while(cI2 < 7 && rI2 < 7) 
+    {
+      cI2++; 
+      rI2++;
+      table.rows[rI2].cells[cI2].classList.add('Movable');
+    }
+    cI2 = cI;
+    rI2= rI; 
+    while(cI2 >= 0)
+    {
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      cI2--;
+    }
+    cI2 = cI;
+    rI2= rI;
+    while(rI2 >= 0)
+    {
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      rI2--;
+    }
+     cI2 = cI;
+     rI2= rI; 
+    while(cI2 >= 0)
+    {
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      cI2--;
+    }
+    cI2 = cI;
+    rI2= rI; 
+    while(down - rI2 >= 0)
+    {
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      rI2++;
+    }
+     cI2 = cI;
+     rI2= rI; 
+    while(right - cI2 >= 0)
+    {
+      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
+      cI2++;
+    }
+    cI2 = cI;
+    rI2= rI; 
+  }
+  if(type[0] === 'knight')
+  {
+    let x; 
+    let y; 
+    let surrondings = [[cI2 - 2 , rI2 + 1] ]; 
+    for(let i = 0; i < surrondings.length; i++)
+    {
+      x = surrondings[i][0]; 
+      y = surrondings[i][1]; 
+      if((x < 8 && x >= 0) && (y < 8 && y >= 0)){ 
+      console.log('x: ' + x +' y: ' + y);
+      table.rows[y].cells[x].classList.add('Movable');
+      }
+    }
+  }
 }
 // function pieceMoveRemove(type, cI ,rI)
 // {
@@ -236,4 +385,5 @@ function createChessBoard() {
 
 window.addEventListener('load', createChessBoard);
 
+//possible movment is only for the same row or column
 
