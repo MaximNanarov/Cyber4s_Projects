@@ -99,7 +99,7 @@ function getInitialBoard() {
 
 function addImage(cell, player, name) {
   const image = document.createElement('img');
-  image.src = 'images/' + player + '/' + name + '.png';   //images\white_rotated\knight.png
+  image.src ='images/' + player + '/' + name + '.png';   //Chess\images\dark\bishop.png
   cell.appendChild(image);
 }
 
