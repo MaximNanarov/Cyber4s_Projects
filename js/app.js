@@ -11,8 +11,28 @@ let pieces = [];
 
 class boardData{
 
-  constructor(B){
+  constructor(B, pieces){
     this.table = B;
+    this.pieces = pieces;
+  }
+
+  getCell(row,col){
+    return this.table.rows[row].cells[col]; 
+  }
+
+  getpiece(row,col){
+    let pLength = this.pieces.length;
+    for(let i = 0; i < pLength; i++)
+    {
+      if(this.pieces[i].row === row && this.pieces[i].col === col)
+      {
+        return this.pieces[i]; 
+      }
+    }
+  }
+  
+  paintCell(cell, CssClass){
+    cell.classList.add(CssClass);
   }
 
   cleanBoardFromMoves() {
@@ -108,110 +128,110 @@ function getThePieceByIndex(cI, rI)//get's the index of the cell that's been cli
    {
      if(pieces[i].row === rI && pieces[i].col === cI)
      {
-       return [pieces[i].type, pieces[i].player]; 
+       return pieces[i]; 
      }
    }
   }
 //the possible movement of the pieces
 function pieceMove(type, cI ,rI)
 {
-  let bd = new boardData(document.getElementById('table1'));
+  let bd = new boardData(document.getElementById('table1'), type );
   let table = bd.table;
   let down =7;
   let up =0;
   let right =7; 
   let left =0;
-  let cI2 = cI;
-  let rI2= rI; 
-  if(type[0] === 'rook') // the movement of rook
+  let colIndex = cI;
+  let rowIndex= rI; 
+  if(type.type === 'rook') // the movement of rook
   {
-    while(cI2 >= 0)
+    while(colIndex >= 0)                      //cI = col   
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      cI2--;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      colIndex--;
     }
-    cI2 = cI;
-    rI2= rI;
-    while(rI2 >= 0)
+    colIndex = cI;
+    rowIndex= rI;
+    while(rowIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      rI2--;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      rowIndex--;
     }
-     cI2 = cI;
-     rI2= rI; 
-    while(cI2 >= 0)
+     colIndex = cI;
+     rowIndex= rI; 
+    while(colIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      cI2--;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      colIndex--;
     }
-    cI2 = cI;
-    rI2= rI; 
-    while(down - rI2 >= 0)
+    colIndex = cI;
+    rowIndex= rI; 
+    while(down - rowIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      rI2++;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      rowIndex++;
     }
-     cI2 = cI;
-     rI2= rI; 
-    while(right - cI2 >= 0)
+     colIndex = cI;
+     rowIndex= rI; 
+    while(right - colIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      cI2++;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      colIndex++;
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
   }
-  if(type[0] === 'pawn' && type[1] === 'dark')
+  if(type.type === 'pawn' && type.player === 'dark')
   {
-    table.rows[rI2 - 1].cells[cI2].classList.add('Movable');;
+    table.rows[rowIndex - 1].cells[colIndex].classList.add('Movable');;
   }
-  else if(type[0] === 'pawn' && type[1] === 'white_rotated')
+  else if(type.type === 'pawn' && type.player === 'white_rotated')
   {
     table.rows[rI + 1].cells[cI].classList.add('Movable');
   }
-  if(type[0] === 'bishop')
+  if(type.type === 'bishop')
   {//up & left
-    while(cI2 > 0 && rI2 > 0) 
+    while(colIndex > 0 && rowIndex > 0) 
     {
-      cI2--; 
-      rI2--;
-      table.rows[rI2].cells[cI2].classList.add('Movable');
+      colIndex--; 
+      rowIndex--;
+      table.rows[rowIndex].cells[colIndex].classList.add('Movable');
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
     //up & right
-    while(cI2 < 7 && rI2 > 0) 
+    while(colIndex < 7 && rowIndex > 0) 
     {
-      cI2++; 
-      rI2--;
-      table.rows[rI2].cells[cI2].classList.add('Movable');
+      colIndex++; 
+      rowIndex--;
+      table.rows[rowIndex].cells[colIndex].classList.add('Movable');
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
     //down & left
-    while(cI2 > 0 && rI2 < 7) 
+    while(colIndex > 0 && rowIndex < 7) 
     {
-      cI2--; 
-      rI2++;
-      table.rows[rI2].cells[cI2].classList.add('Movable');
+      colIndex--; 
+      rowIndex++;
+      table.rows[rowIndex].cells[colIndex].classList.add('Movable');
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
     //down & right
-    while(cI2 < 7 && rI2 < 7) 
+    while(colIndex < 7 && rowIndex < 7) 
     {
-      cI2++; 
-      rI2++;
-      table.rows[rI2].cells[cI2].classList.add('Movable');
+      colIndex++; 
+      rowIndex++;
+      table.rows[rowIndex].cells[colIndex].classList.add('Movable');
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
   }
-  if(type[0]=== 'king')
+  if(type.type === 'king')
   {
     let x; 
     let y; 
-    let surrondings = [[cI2 + 1 , rI2 + 1], [cI2 - 1 , rI2 - 1], [cI2 + 1 , rI2 - 1],[cI2 - 1 , rI2 + 1],[cI2  , rI2 + 1],[cI2 + 1 , rI2 ],[cI2 , rI2 - 1],[cI2 - 1 , rI2] ]; 
+    let surrondings = [[colIndex + 1 , rowIndex + 1], [colIndex - 1 , rowIndex - 1], [colIndex + 1 , rowIndex - 1],[colIndex - 1 , rowIndex + 1],[colIndex  , rowIndex + 1],[colIndex + 1 , rowIndex ],[colIndex , rowIndex - 1],[colIndex - 1 , rowIndex] ]; 
     for(let i = 0; i < surrondings.length; i++)
     {
       x = surrondings[i][0]; 
@@ -222,84 +242,84 @@ function pieceMove(type, cI ,rI)
       }
     }
   }
-  if(type[0] === 'queen')
+  if(type.type === 'queen')
   {
-    while(cI2 > 0 && rI2 > 0) 
+    while(colIndex > 0 && rowIndex > 0) 
     {
-      cI2--; 
-      rI2--;
-      table.rows[rI2].cells[cI2].classList.add('Movable');
+      colIndex--; 
+      rowIndex--;
+      table.rows[rowIndex].cells[colIndex].classList.add('Movable');
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
     //up & right
-    while(cI2 < 7 && rI2 > 0) 
+    while(colIndex < 7 && rowIndex > 0) 
     {
-      cI2++; 
-      rI2--;
-      table.rows[rI2].cells[cI2].classList.add('Movable');
+      colIndex++; 
+      rowIndex--;
+      table.rows[rowIndex].cells[colIndex].classList.add('Movable');
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
     //down & left
-    while(cI2 > 0 && rI2 < 7) 
+    while(colIndex > 0 && rowIndex < 7) 
     {
-      cI2--; 
-      rI2++;
-      table.rows[rI2].cells[cI2].classList.add('Movable');
+      colIndex--; 
+      rowIndex++;
+      table.rows[rowIndex].cells[colIndex].classList.add('Movable');
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
     //down & right
-    while(cI2 < 7 && rI2 < 7) 
+    while(colIndex < 7 && rowIndex < 7) 
     {
-      cI2++; 
-      rI2++;
-      table.rows[rI2].cells[cI2].classList.add('Movable');
+      colIndex++; 
+      rowIndex++;
+      table.rows[rowIndex].cells[colIndex].classList.add('Movable');
     }
-    cI2 = cI;
-    rI2= rI; 
-    while(cI2 >= 0)
+    colIndex = cI;
+    rowIndex= rI; 
+    while(colIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      cI2--;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      colIndex--;
     }
-    cI2 = cI;
-    rI2= rI;
-    while(rI2 >= 0)
+    colIndex = cI;
+    rowIndex= rI;
+    while(rowIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      rI2--;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      rowIndex--;
     }
-     cI2 = cI;
-     rI2= rI; 
-    while(cI2 >= 0)
+     colIndex = cI;
+     rowIndex= rI; 
+    while(colIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      cI2--;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      colIndex--;
     }
-    cI2 = cI;
-    rI2= rI; 
-    while(down - rI2 >= 0)
+    colIndex = cI;
+    rowIndex= rI; 
+    while(down - rowIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      rI2++;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      rowIndex++;
     }
-     cI2 = cI;
-     rI2= rI; 
-    while(right - cI2 >= 0)
+     colIndex = cI;
+     rowIndex= rI; 
+    while(right - colIndex >= 0)
     {
-      document.getElementById('table1').rows[rI2].cells[cI2].classList.add('Movable');
-      cI2++;
+      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
+      colIndex++;
     }
-    cI2 = cI;
-    rI2= rI; 
+    colIndex = cI;
+    rowIndex= rI; 
   }
-  if(type[0] === 'knight')
+  if(type.type === 'knight')
   {
     let x; 
     let y; 
-    let surrondings = [[cI2 - 2 , rI2 - 1],[cI2 - 2 , rI2 + 1],[cI2 - 1 , rI2 - 2],[cI2 - 1 , rI2 + 2], [cI2 + 1 , rI2 - 2], [cI2 + 1 , rI2 + 2], [cI2 + 2 , rI2 - 1], [cI2 + 2 , rI2 + 1]]; 
+    let surrondings = [[colIndex - 2 , rowIndex - 1],[colIndex - 2 , rowIndex + 1],[colIndex - 1 , rowIndex - 2],[colIndex - 1 , rowIndex + 2], [colIndex + 1 , rowIndex - 2], [colIndex + 1 , rowIndex + 2], [colIndex + 2 , rowIndex - 1], [colIndex + 2 , rowIndex + 1]]; 
     for(let i = 0; i < surrondings.length; i++)
     {
       x = surrondings[i][0]; 
