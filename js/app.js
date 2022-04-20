@@ -112,7 +112,7 @@ function getThePieceByIndex(cI, rI)//get's the index of the cell that's been cli
      }
    }
   }
-
+//the possible movement of the pieces
 function pieceMove(type, cI ,rI)
 {
   let bd = new boardData(document.getElementById('table1'));
@@ -167,7 +167,7 @@ function pieceMove(type, cI ,rI)
   }
   else if(type[0] === 'pawn' && type[1] === 'white_rotated')
   {
-    table.table.rows[rI + 1].cells[cI].classList.add('Movable');
+    table.rows[rI + 1].cells[cI].classList.add('Movable');
   }
   if(type[0] === 'bishop')
   {//up & left
