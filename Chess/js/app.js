@@ -84,19 +84,6 @@ function getInitialBoard() {
   return result;
 }
 
-// function SetStartingPieces(piecesName, typePLayer, result)
-// {
-//   let piecesNameLength = piecesName.Length; 
-//   for(let i = 0; i < piecesNameLength; i++)
-//   {
-//     if(typePLayer !== 'dark')
-//     result.push(new Piece(0, i, piecesName[i], typePLayer))
-//     else
-//     result.push(new Piece(7, i, piecesName[i], typePLayer))
-//   }
-//   return result;
-// }
-
 function addImage(cell, player, name) {
   const image = document.createElement('img');
   image.src ='images/' + player + '/' + name + '.png';   //Chess\images\dark\bishop.png
@@ -331,51 +318,6 @@ function pieceMove(type, cI ,rI)
     }
   }
 }
-// function pieceMoveRemove(type, cI ,rI)
-// {
-//   let down =7;
-//   let up =0;
-//   let right =7; 
-//   let left =0;
-//   let cI2 = cI;
-//   let rI2= rI; 
-//   if(type === 'rook') // the movement of rook
-//   {
-//     while(rI2 >= 0)
-//     {
-//       console.log(rI2 + ' ' + cI2);
-//       document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
-//       rI2--;
-//     }
-//      cI2 = cI;
-//      rI2= rI; 
-//     while(cI2 >= 0)
-//     {
-//       console.log(rI2 + ' ' + cI2);
-//       document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
-//       cI2--;
-//     }
-//     cI2 = cI;
-//     rI2= rI; 
-//     while( down - rI2 > 0)
-//     {
-//       console.log(rI2 + ' ' + cI2);
-//       document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
-//       rI2++;
-//     }
-//      cI2 = cI;
-//      rI2= rI; 
-//     while(right - cI2 > 0)
-//     {
-//       console.log(rI2 + ' ' + cI2);
-//       document.getElementById('table1').rows[rI2].cells[cI2].classList.remove('Movable');
-//       cI2++;
-//     }
-//     cI2 = cI;
-//     rI2= rI; 
-//   }
-// }
-
 
 // creats the chess board
 function createChessBoard() {
