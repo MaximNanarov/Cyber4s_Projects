@@ -35,6 +35,27 @@ class boardData{
     cell.classList.add(CssClass);
   }
 
+  allRookMoves(cI, rI)
+  {
+    let result = [,];
+    for(let i = 1; i < 8; i++)
+    {
+      result.push(i,cI);
+      result.push(-i,cI);
+      result.push(rI,-i);
+      result.push(rI,i);
+    }
+    return result;
+  }
+
+  rookFliterdMoves(cI,rI)
+  {
+    let possibleMoves = this.allRookMoves(cI, rI);
+    let filterMoves = [,]; 
+    
+  }
+
+
   cleanBoardFromMoves() {
     for(let i = 0; i < 8; i++){
      for(let j = 0; j < 8; j++){
@@ -95,13 +116,14 @@ function onCellClick(event) {
   if (selectedCell !== undefined) {
     selectedCell.classList.remove('selected');
   }
-  let BoardData = new boardData(document.getElementById('table1'));
+  let BoardData = new boardData(document.getElementById('table1'), pieces);
   BoardData.cleanBoardFromMoves();
   selectedCell = event.currentTarget;
-  selectedCell.classList.add('selected');
+  BoardData.paintCell(selectedCell, 'selected');
+  // selectedCell.classList.add('selected');
   let cI = selectedCell.cellIndex;
   let rI = selectedCell.parentNode.rowIndex;
-  let pType = getThePieceByIndex(cI, rI);
+  let pType = BoardData.getpiece(rI,cI); // getThePieceByIndex(cI, rI);
   
   
    moveFlag = pieceMove(pType,cI, rI); 
@@ -153,7 +175,7 @@ function pieceMove(type, cI ,rI)
     }
     colIndex = cI;
     rowIndex= rI; 
-    while(down - rowIndex >= 0)
+    while(rowIndex - 7 <= 0)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       rowIndex++;
