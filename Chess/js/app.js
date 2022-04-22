@@ -35,26 +35,25 @@ class boardData{
     cell.classList.add(CssClass);
   }
 
-  allRookMoves(cI, rI)
-  {
-    let result = [,];
-    for(let i = 1; i < 8; i++)
+  // allRookMoves(cI, rI)
+  // {
+  //   let result = [,];
+  //   for(let i = 1; i < 8; i++)
+  //   {
+  //     result.push(i,cI);
+  //     result.push(-i,cI);
+  //     result.push(rI,-i);
+  //     result.push(rI,i);
+  //   }
+  //   return result;
+  // }
+  MovePiece(piece, cI, rI, cell){
+    console.log(cell.className);
+    if(cell.className === 'Movable')
     {
-      result.push(i,cI);
-      result.push(-i,cI);
-      result.push(rI,-i);
-      result.push(rI,i);
+      console.log('worked');
     }
-    return result;
   }
-
-  rookFliterdMoves(cI,rI)
-  {
-    let possibleMoves = this.allRookMoves(cI, rI);
-    let filterMoves = [,]; 
-    
-  }
-
 
   cleanBoardFromMoves() {
     for(let i = 0; i < 8; i++){
@@ -111,6 +110,10 @@ function addImage(cell, player, name) {
   cell.appendChild(image);
 }
 
+function removeImage(cell)
+{
+  cell.removeChild(image);
+}
 //the click that chooses a cell
 function onCellClick(event) {
   if (selectedCell !== undefined) {
@@ -124,9 +127,35 @@ function onCellClick(event) {
   let cI = selectedCell.cellIndex;
   let rI = selectedCell.parentNode.rowIndex;
   let pType = BoardData.getpiece(rI,cI); // getThePieceByIndex(cI, rI);
-  
-  
-   moveFlag = pieceMove(pType,cI, rI); 
+  let SavedPiece;
+  if(pType !== undefined)
+  {
+  let Moves = piecePossibleMove(pType,cI, rI); 
+   for(let i = 0; i <Moves.length; i++)
+    {
+     console.log(Moves[i][0]+' '+ Moves[i][1]);
+   }
+   SavedPiece = pType;
+  }
+  else if(ThePieceCanMoveThere(Moves, rI, cI)){
+    addImage(selectedCell,SavedPiece.player, SavedPiece.type) 
+  }
+}
+
+function ThePieceCanMoveThere(Moves, rI, cI)
+{
+  if(Moves !== undefined)
+  {
+   for(let i = 0; i < Moves.length; i++)
+   {
+     if(Moves[i][0] === rI, Moves[i][1] === cI)
+     {
+       return true;
+     }
+   }
+   return false;
+  }
+  return false;
 }
 
 function getThePieceByIndex(cI, rI)//get's the index of the cell that's been clikced and getting the piece placed in it
@@ -142,29 +171,20 @@ function getThePieceByIndex(cI, rI)//get's the index of the cell that's been cli
    }
   }
 //the possible movement of the pieces
-function pieceMove(type, cI ,rI)
+function piecePossibleMove(type, cI ,rI)
 {
+  let Moves = [,];
   let bd = new boardData(document.getElementById('table1'), type );
   let table = bd.table;
-  let down =7;
-  let up =0;
-  let right =7; 
-  let left =0;
   let colIndex = cI;
   let rowIndex= rI; 
   if(type.type === 'rook') // the movement of rook
   {
-    while(colIndex >= 0)                      //cI = col   
-    {
-      document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
-      colIndex--;
-    }
-    colIndex = cI;
-    rowIndex= rI;
     while(rowIndex >= 0)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       rowIndex--;
+      Moves.push(rowIndex,colIndex);
     }
      colIndex = cI;
      rowIndex= rI; 
@@ -172,6 +192,7 @@ function pieceMove(type, cI ,rI)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       colIndex--;
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -179,24 +200,29 @@ function pieceMove(type, cI ,rI)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       rowIndex++;
+      Moves.push(rowIndex,colIndex);
     }
      colIndex = cI;
      rowIndex= rI; 
-    while(right - colIndex >= 0)
+    while(7 - colIndex >= 0)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       colIndex++;
+      Moves.push(rowIndex,colIndex);
     }
-    colIndex = cI;
-    rowIndex= rI; 
+    return Moves;
   }
   if(type.type === 'pawn' && type.player === 'dark')
   {
-    table.rows[rowIndex - 1].cells[colIndex].classList.add('Movable');;
+    table.rows[rowIndex - 1].cells[colIndex].classList.add('Movable');
+    Moves.push(rowIndex,colIndex);
+    return Moves;
   }
   else if(type.type === 'pawn' && type.player === 'white_rotated')
   {
     table.rows[rI + 1].cells[cI].classList.add('Movable');
+    Moves.push(rowIndex,colIndex);
+    return Moves;
   }
   if(type.type === 'bishop')
   {//up & left
@@ -205,6 +231,7 @@ function pieceMove(type, cI ,rI)
       colIndex--; 
       rowIndex--;
       table.rows[rowIndex].cells[colIndex].classList.add('Movable');
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -214,6 +241,7 @@ function pieceMove(type, cI ,rI)
       colIndex++; 
       rowIndex--;
       table.rows[rowIndex].cells[colIndex].classList.add('Movable');
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -223,6 +251,7 @@ function pieceMove(type, cI ,rI)
       colIndex--; 
       rowIndex++;
       table.rows[rowIndex].cells[colIndex].classList.add('Movable');
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -232,9 +261,11 @@ function pieceMove(type, cI ,rI)
       colIndex++; 
       rowIndex++;
       table.rows[rowIndex].cells[colIndex].classList.add('Movable');
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
+    return Moves;
   }
   if(type.type === 'king')
   {
@@ -246,10 +277,11 @@ function pieceMove(type, cI ,rI)
       x = surrondings[i][0]; 
       y = surrondings[i][1]; 
       if((x < 8 && x >= 0) && (y < 8 && y >= 0)){ 
-      console.log('x: ' + x +' y: ' + y);
       table.rows[y].cells[x].classList.add('Movable');
+      Moves.push(y,x);
       }
     }
+    return Moves;
   }
   if(type.type === 'queen')
   {
@@ -258,6 +290,7 @@ function pieceMove(type, cI ,rI)
       colIndex--; 
       rowIndex--;
       table.rows[rowIndex].cells[colIndex].classList.add('Movable');
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -267,6 +300,7 @@ function pieceMove(type, cI ,rI)
       colIndex++; 
       rowIndex--;
       table.rows[rowIndex].cells[colIndex].classList.add('Movable');
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -276,6 +310,7 @@ function pieceMove(type, cI ,rI)
       colIndex--; 
       rowIndex++;
       table.rows[rowIndex].cells[colIndex].classList.add('Movable');
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -285,6 +320,7 @@ function pieceMove(type, cI ,rI)
       colIndex++; 
       rowIndex++;
       table.rows[rowIndex].cells[colIndex].classList.add('Movable');
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -292,6 +328,7 @@ function pieceMove(type, cI ,rI)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       colIndex--;
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI;
@@ -299,6 +336,7 @@ function pieceMove(type, cI ,rI)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       rowIndex--;
+      Moves.push(rowIndex,colIndex);
     }
      colIndex = cI;
      rowIndex= rI; 
@@ -306,6 +344,7 @@ function pieceMove(type, cI ,rI)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       colIndex--;
+      Moves.push(rowIndex,colIndex);
     }
     colIndex = cI;
     rowIndex= rI; 
@@ -313,6 +352,7 @@ function pieceMove(type, cI ,rI)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       rowIndex++;
+      Moves.push(rowIndex,colIndex);
     }
      colIndex = cI;
      rowIndex= rI; 
@@ -320,9 +360,9 @@ function pieceMove(type, cI ,rI)
     {
       document.getElementById('table1').rows[rowIndex].cells[colIndex].classList.add('Movable');
       colIndex++;
+      Moves.push(rowIndex,colIndex);
     }
-    colIndex = cI;
-    rowIndex= rI; 
+    return Moves;
   }
   if(type.type === 'knight')
   {
@@ -334,10 +374,11 @@ function pieceMove(type, cI ,rI)
       x = surrondings[i][0]; 
       y = surrondings[i][1]; 
       if((x < 8 && x >= 0) && (y < 8 && y >= 0)){ 
-      console.log('x: ' + x +' y: ' + y);
       table.rows[y].cells[x].classList.add('Movable');
+      Moves.push(y,x);
       }
     }
+    return Moves;
   }
 }
 
