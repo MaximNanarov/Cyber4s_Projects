@@ -9,6 +9,7 @@ const BISHOP = 'bishop';
 const KING = 'king';
 const QUEEN = 'queen';
 
+let moves;
 let selectedCell;
 let boardData;
 let table;
@@ -20,14 +21,12 @@ class Piece {
     this.type = type;
     this.player = player;
   }
-
   getOpponent() {
     if (this.player === WHITE_PLAYER) {
       return BLACK_PLAYER;
     }
     return WHITE_PLAYER;
   }
-
   getPossibleMoves(boardData) {
     // Get relative moves
     let moves;
@@ -66,7 +65,6 @@ class Piece {
     }
     return filteredMoves;
   }
-
   getPawnMoves(boardData) {
     let result = [];
     let direction = 1;
@@ -92,7 +90,6 @@ class Piece {
 
     return result;
   }
-
   getRookMoves(boardData) {
     let result = [];
     result = result.concat(this.getMovesInDirection(-1, 0, boardData));
@@ -101,7 +98,6 @@ class Piece {
     result = result.concat(this.getMovesInDirection(0, 1, boardData));
     return result;
   }
-
   getMovesInDirection(directionRow, directionCol, boardData) {
     let result = [];
 
@@ -122,7 +118,6 @@ class Piece {
     console.log("all empty");
     return result;
   }
-
   getKnightMoves(boardData) {
     let result = [];
     const relativeMoves = [[2, 1], [2, -1], [-2, 1], [-2, -1], [-1, 2], [1, 2], [-1, -2], [1, -2]];
@@ -135,7 +130,6 @@ class Piece {
     }
     return result;
   }
-
   getBishopMoves(boardData) {
     let result = [];
     result = result.concat(this.getMovesInDirection(-1, -1, boardData));
@@ -144,7 +138,6 @@ class Piece {
     result = result.concat(this.getMovesInDirection(1, 1, boardData));
     return result;
   }
-
   getKingMoves(boardData) {
     let result = [];
     const relativeMoves = [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 1], [1, -1], [1, 0], [1, 1]];
@@ -157,7 +150,6 @@ class Piece {
     }
     return result;
   }
-
   getQueenMoves(boardData) {
     let result = this.getBishopMoves(boardData);
     result = result.concat(this.getRookMoves(boardData));
@@ -218,6 +210,10 @@ function addImage(cell, player, name) {
   image.src = 'images/' + player + '/' + name + '.png';
   cell.appendChild(image);//images\dark\bishop.png
 }
+function removeImage(cell)
+{
+  cell.removeChild(image);
+}
 
 function onCellClick(event, row, col) {
   // Clear all previous possible moves
@@ -226,17 +222,26 @@ function onCellClick(event, row, col) {
       table.rows[i].cells[j].classList.remove('Movable');
     }
   }
-
   // Show possible moves
   const piece = boardData.getPiece(row, col);
   if (piece !== undefined) {
     let possibleMoves = piece.getPossibleMoves(boardData);
+    moves = piece.getPossibleMoves(boardData);
     for (let possibleMove of possibleMoves) {
       const cell = table.rows[possibleMove[0]].cells[possibleMove[1]];
       cell.classList.add('Movable');
     }
   }
-  
+
+  //trying to add movement!!!
+  for (let Move of moves) {
+  if(selectedCell === table.rows[Move[0]].cells[Move[1]])
+    {
+      addImage(selectedCell, piece.player, piece.name); 
+      removeImage(table.rows[piece.row].cells[piece.col]);
+      moves = undefined;
+    }
+  }
   // Clear previously selected cell
   if (selectedCell !== undefined) {
     selectedCell.classList.remove('selected');
