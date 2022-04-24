@@ -100,7 +100,6 @@ class Piece {
   }
   getMovesInDirection(directionRow, directionCol, boardData) {
     let result = [];
-
     for (let i = 1; i < BOARD_SIZE; i++) {
       let row = this.row + directionRow * i;
       let col = this.col + directionCol * i;
@@ -179,6 +178,9 @@ class BoardData {
     const piece = this.getPiece(row, col);
     return piece !== undefined && piece.player === player;
   }
+
+  
+
 }
 
 function getInitialPieces() {
@@ -234,14 +236,7 @@ function onCellClick(event, row, col) {
   }
 
   //trying to add movement!!!
-  for (let Move of moves) {
-  if(selectedCell === table.rows[Move[0]].cells[Move[1]])
-    {
-      addImage(selectedCell, piece.player, piece.name); 
-      removeImage(table.rows[piece.row].cells[piece.col]);
-      moves = undefined;
-    }
-  }
+ 
   // Clear previously selected cell
   if (selectedCell !== undefined) {
     selectedCell.classList.remove('selected');
