@@ -154,6 +154,12 @@ class Piece {
     result = result.concat(this.getRookMoves(boardData));
     return result;
   }
+  UpdatePiecePlacement(row, col)
+  {
+    this.row = row; 
+    this.col = col;
+  }
+
 }
 
 class BoardData {
@@ -214,7 +220,7 @@ function addImage(cell, player, name) {
 }
 function removeImage(cell)
 {
-  cell.removeChild(image);
+  cell.image = undefined;                        
 }
 
 function onCellClick(event, row, col) {
@@ -236,7 +242,10 @@ function onCellClick(event, row, col) {
   }
 
   //trying to add movement!!!
- 
+  // if(moves !== undefined && ifSelectedInMoves(moves, selectedCell))
+  // {
+  //   MoveThePiece();
+  // }
   // Clear previously selected cell
   if (selectedCell !== undefined) {
     selectedCell.classList.remove('selected');
@@ -246,6 +255,18 @@ function onCellClick(event, row, col) {
   selectedCell = event.currentTarget;
   selectedCell.classList.add('selected');
 }
+
+//  function ifSelectedInMoves(moves, selectedCell)
+// {
+//   for(let i = 0; i < 8; i++)
+//   {
+//     for(let j =0; j < 8; j++)
+//     {
+//        return moves[0] === selectedCell.row && moves[1] === selectedCell.cell;
+//     }
+//   }
+//   return false; 
+// }
 
 function createChessBoard() {
   // Create empty chess board HTML:
