@@ -182,6 +182,10 @@ class BoardData {
     const piece = this.getPiece(row, col);
     return piece !== undefined && piece.player === player;
   }
+  isKing(row, col, player) {
+    const piece = this.getPiece(row, col);
+      return (piece !== undefined && piece.type === 'king'); 
+  }
 
   removePiece(row, col) {
     for (let i = 0; i < this.pieces.length; i++) {
