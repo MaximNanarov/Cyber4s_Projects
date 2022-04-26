@@ -105,13 +105,15 @@ class Piece {
       let col = this.col + directionCol * i;
       if (boardData.isEmpty(row, col)) {
         result.push([row, col]);
-      } else if (boardData.isPlayer(row, col, this.getOpponent())) {
+      } else if (boardData.isPlayer(row, col, this.getOpponent()) && !isKing(row, col)) {
         result.push([row, col]);
         console.log("opponent");
         return result;
-      } else if (boardData.isPlayer(row, col, this.player)) {
+      } else if (boardData.isPlayer(row, col, this.player) && !isKing(row, col)) {
         console.log("player");
         return result;
+      }else if( boardData.isPlayer(row, col, this.getOpponent()) && isKing(row, col)){
+        
       }
     }
     console.log("all empty");
@@ -182,7 +184,7 @@ class BoardData {
     const piece = this.getPiece(row, col);
     return piece !== undefined && piece.player === player;
   }
-  isKing(row, col, player) {
+  isKing(row, col) {
     const piece = this.getPiece(row, col);
       return (piece !== undefined && piece.type === 'king'); 
   }
@@ -289,6 +291,9 @@ function tryMove(piece, row, col) {
 
 function initGame() {
   // Create list of pieces (32 total)
+  let headLine = document.createElement('h1');
+  document.body.appendChild(headLine); 
+  headLine.textContent = 'Maxim Chess';
   turnCounter = 1;
   boardData = new BoardData(getInitialPieces());
   createChessBoard(boardData);
