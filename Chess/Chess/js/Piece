@@ -41,6 +41,8 @@ class Piece {
         filteredMoves.push(absoluteMove);
       }
     }
+
+    
     return filteredMoves;
   }
 

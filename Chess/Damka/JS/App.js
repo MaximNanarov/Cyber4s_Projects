@@ -3,6 +3,7 @@ const SOLDIR = 'Soldir';
 const QUEEN = 'Queen';
 const BOARD_SIZE = 8;
 
+let selectedPiece;
 
 window.addEventListener('load', () => {
     console.log('HTML page is loaded');
@@ -10,12 +11,12 @@ window.addEventListener('load', () => {
     table.id = tableID; 
     document.body.appendChild(table); 
     console.log('the table has been append');
-    for(let i = 0; i < 8; i++)
+    for(let row = 0; row < 8; row++)
     {
         let Row = table.insertRow();
-        for(let j =0; j < 8; j++){
+        for(let col =0; col < 8; col++){
             let cell = Row.insertCell(); 
-            if((i + j) % 2 === 0)
+            if((row + col) % 2 === 0)
             {
                 cell.className = 'light-cell';
             }
@@ -23,14 +24,13 @@ window.addEventListener('load', () => {
             {
                 cell.className = 'dark-cell';
             }
+            cell.addEventListener('click',() => onCellClick(row, col));
         }
     }
     let boardInfo = new BoardInfo();
       for (let piece of boardInfo.pieces) {
         const cell = table.rows[piece.row].cells[piece.col];
-        console.log(piece.player+' '+piece.type);
         addImage(cell, piece.player, piece.type);
-
       }
     });
 
@@ -44,6 +44,13 @@ window.addEventListener('load', () => {
   }
 
   function onCellClick(row,col){
+    let pieces = new BoardInfo(); 
+    selectedPiece = pieces.getPiece(row,col); 
+    console.log('piece was clicked');
+    if(selectedPiece !== undefined)
+    {
+     
+    }
 
   }
 

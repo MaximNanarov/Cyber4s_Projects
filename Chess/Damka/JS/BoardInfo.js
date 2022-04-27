@@ -1,10 +1,10 @@
 class BoardInfo{
 
     constructor(){
-    this.initPieces(); 
+    this.pieces = this.initPieces(); 
     }
     initPieces() {
-        // Create list of pieces (32 total)
+        // Create list of pieces (24 total)
         this.pieces = [];
         for(let i = 0; i < 4; i++)
         {
@@ -14,12 +14,20 @@ class BoardInfo{
           this.pieces.push(new Piece(5, i * 2, 'White', SOLDIR));
           this.pieces.push(new Piece(6, i * 2 + 1, 'White', SOLDIR));
           this.pieces.push(new Piece(7, i * 2, 'White', SOLDIR));
-          
          }
-        // for(let piece of this.pieces)
-        // {
-        //     console.log('piece in the row: '+ piece.row + ' is in col: ' + piece.col +' this piece type is: '+ piece.type+' this piece color: '+piece.player);
-        // }
+         return this.pieces;
       }
+    
+    getPiece(row,col)
+    {
+        let pieces = this.initPieces();
+        for(let i = 0; i < this.pieces.length; i++)
+        {
+                if(pieces[i].row === row && pieces[i].col === col)
+                {
+                    return pieces[i];
+                } 
+        }
+    }
 }
 
