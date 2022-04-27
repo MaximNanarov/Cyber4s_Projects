@@ -1,0 +1,25 @@
+class BoardInfo{
+
+    constructor(){
+    this.initPieces(); 
+    }
+    initPieces() {
+        // Create list of pieces (32 total)
+        this.pieces = [];
+        for(let i = 0; i < 4; i++)
+        {
+          this.pieces.push(new Piece(0, i * 2 + 1, 'Black', SOLDIR));
+          this.pieces.push(new Piece(1, i * 2, 'Black', SOLDIR));
+          this.pieces.push(new Piece(2, i * 2 + 1, 'Black', SOLDIR));
+          this.pieces.push(new Piece(5, i * 2, 'White', SOLDIR));
+          this.pieces.push(new Piece(6, i * 2 + 1, 'White', SOLDIR));
+          this.pieces.push(new Piece(7, i * 2, 'White', SOLDIR));
+          
+         }
+        // for(let piece of this.pieces)
+        // {
+        //     console.log('piece in the row: '+ piece.row + ' is in col: ' + piece.col +' this piece type is: '+ piece.type+' this piece color: '+piece.player);
+        // }
+      }
+}
+

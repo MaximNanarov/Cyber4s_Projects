@@ -1,0 +1,25 @@
+.dark-cell {
+    background: rgb(0, 0, 0);
+    width: 45px;
+    height: 45px;
+    border: 2px solid black;
+  }
+  .light-cell {
+    background: rgb(255, 255, 255);
+    width: 45px;
+    height: 45px;
+    border: 2px solid black;
+  }
+
+  img {
+    width: 75%;
+    height: 75%;   
+     
+  }
+  
+
+  table{
+      position: relative; 
+      margin: auto;
+      top: 50px;
+  }
