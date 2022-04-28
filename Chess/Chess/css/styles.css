@@ -20,7 +20,10 @@ h1{
   text-decoration-line: underline;
   color:brown;
 }
-
+img{
+  object-fit: fill;
+  height: 43px;
+}
 .dark-cell {
   background: rgb(139, 17, 17);
   width: 45px;
