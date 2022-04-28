@@ -52,23 +52,44 @@ class Piece {
     if (this.player === BLACK_PLAYER) {
       direction = -1;
     }
+    let position;
+    //this conditions checks if the pawn is in the first move
+    if(this.row === 6 || this.row === 1)
+    {
+        console.log('does work');
+        position = [[this.row + direction, this.col], [this.row + direction * 2, this.col]];
+        if (boardData.isEmpty(position[0][0], position[0][1])) {
+         result.push(position[0]);
+         if(boardData.isEmpty(position[1][0], position[1][1]))
+         result.push(position[1]);
+        }
+        //this is when there's an option to eat an enemy soldir at the begining
+        position = [this.row + direction, this.col + direction];
+     if (boardData.isPlayer(position[0], position[1], this.getOpponent())) {
+       result.push(position);
+     }
 
-    let position = [this.row + direction, this.col];
+     position = [this.row + direction, this.col - direction];
+      if (boardData.isPlayer(position[0], position[1], this.getOpponent())) {
+       result.push(position);
+     }
+    }
+    else{
+    position = [this.row + direction, this.col];
     if (boardData.isEmpty(position[0], position[1])) {
       result.push(position);
     }
+     
+     position = [this.row + direction, this.col + direction];
+     if (boardData.isPlayer(position[0], position[1], this.getOpponent())) {
+       result.push(position);
+     }
 
-    position = [this.row + direction, this.col + direction];
-    if (boardData.isPlayer(position[0], position[1], this.getOpponent())) {
-      result.push(position);
+     position = [this.row + direction, this.col - direction];
+      if (boardData.isPlayer(position[0], position[1], this.getOpponent())) {
+       result.push(position);
+     }
     }
-
-    position = [this.row + direction, this.col - direction];
-    if (boardData.isPlayer(position[0], position[1], this.getOpponent())) {
-      result.push(position);
-    }
-
-
     return result;
   }
 

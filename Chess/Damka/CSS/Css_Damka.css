@@ -1,11 +1,11 @@
 .dark-cell {
-    background: rgb(0, 0, 0);
+    background: rgb(4, 83, 35);
     width: 45px;
     height: 45px;
     border: 2px solid black;
   }
   .light-cell {
-    background: rgb(255, 255, 255);
+    background: rgb(60, 177, 75);
     width: 45px;
     height: 45px;
     border: 2px solid black;
@@ -14,12 +14,16 @@
   img {
     width: 75%;
     height: 75%;   
-     
   }
   
+  body{
+    background-color: chocolate;
+  }
 
   table{
       position: relative; 
       margin: auto;
       top: 50px;
+      border: 1px solid black;
+      border-collapse: collapse;
   }
