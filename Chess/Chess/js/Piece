@@ -4,6 +4,7 @@ class Piece {
     this.col = col;
     this.type = type;
     this.player = player;
+    this.moveCounter = 0;
   }
 
   getOpponent() {
@@ -31,7 +32,6 @@ class Piece {
     } else {
       console.log("Unknown type", type)
     }
-
     // Get filtered absolute moves
     let filteredMoves = [];
     for (const absoluteMove of moves) {
@@ -56,7 +56,6 @@ class Piece {
     //this conditions checks if the pawn is in the first move
     if(this.row === 6 || this.row === 1)
     {
-        console.log('does work');
         position = [[this.row + direction, this.col], [this.row + direction * 2, this.col]];
         if (boardData.isEmpty(position[0][0], position[0][1])) {
          result.push(position[0]);
@@ -112,16 +111,13 @@ class Piece {
         result.push([row, col]);
       } else if (boardData.isPlayer(row, col, this.getOpponent())) {
         result.push([row, col]);
-        console.log("opponent");
         return result;
       } else if (boardData.isPlayer(row, col, this.player)) {
-        console.log("player");
         return result;
        } // else if( boardData.isPlayer(row, col, this.getOpponent())){
         
       // }
     }
-    console.log("all empty");
     return result;
   }
 
@@ -153,13 +149,32 @@ class Piece {
     for (let relativeMove of relativeMoves) {
       let row = this.row + relativeMove[0];
       let col = this.col + relativeMove[1];
-      if (!boardData.isPlayer(row, col, this.player)) {
-        result.push([row, col]);
+        if (!boardData.isPlayer(row, col, this.player)) {
+          result.push([row, col]);
+        }
+      }// to do the result dosn't return the moves
+      console.log(this.moveCounter);
+      if(this.moveCounter === 0)
+      {
+        let futureResult = [,];
+        result.push(this.ScanInDirection(boardData, futureResult,-1));
+        result.push(this.ScanInDirection(boardData, futureResult,1));
       }
-    }
+
+
     return result;
   }
-
+  ScanInDirection(boardData, result,directionCol){
+    console.log('king turn counter is zero');//preobobly dont take the result and returns it, i suspect its from the getpiecerookmove that returns 0.
+        for (let i = 1; i < BOARD_SIZE; i++) {
+          let col = this.col + directionCol * i;
+          if (boardData.isEmpty(this.row, col)) {
+            result.push([this.row, col]);
+          } else if (boardData.isPlayer(this.row, col, this.player) && boardData.getPieceRookMoveRook(this.row,col) === 0) {
+            return result;
+          }
+      }   
+  }
   getQueenMoves(boardData) {
     let result = this.getBishopMoves(boardData);
     result = result.concat(this.getRookMoves(boardData));

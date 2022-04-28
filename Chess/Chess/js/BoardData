@@ -24,6 +24,16 @@ class BoardData {
     }
   }
 
+  getPieceRookMoveRook(row,col)
+  {
+    for (const piece of this.pieces) {
+      if (piece.row === row && piece.col === col && piece.type === 'rook') {
+        return piece.moveCounter;
+      }
+    }
+    return 1;
+  }
+
   removePiece(row, col) {
     for (let i = 0; i < this.pieces.length; i++) {
       const piece = this.pieces[i];

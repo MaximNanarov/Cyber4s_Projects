@@ -19,7 +19,8 @@ class Game {
           if (removedPiece !== undefined && removedPiece.type === KING) {
             this.winner = piece.player;
           }
-  
+          piece.moveCounter++; 
+          console.log(piece.moveCounter);
           this.currentPlayer = piece.getOpponent();
           return true;
         }
